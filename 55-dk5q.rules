@@ -1,0 +1,1 @@
+KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="24f0", ATTRS{idProduct}=="2020", MODE="0666", GROUP="plugdev"
