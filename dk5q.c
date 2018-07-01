@@ -76,15 +76,12 @@ int dk5q_set_key_channel(dk5q_handle handle, uint8_t key, uint8_t channel, uint8
 
 int dk5q_set_key_rgb(dk5q_handle handle, uint8_t key, uint8_t r, uint8_t g, uint8_t b)
 {
-  static const uint8_t red[] = { 0, 1, 2 };
-  static const uint8_t green[] = { 1, 2, 0 };
-  static const uint8_t blue[] = { 2, 0, 1 };
-  int channelgroup = channelgroups[key]&3;
-  int res = dk5q_set_key_channel(handle, key, red[channelgroup], r);
+  int base = channelgroups[key]&3;
+  int res = dk5q_set_key_channel(handle, key, base, r);
   if (res >= 0) {
-    res = dk5q_set_key_channel(handle, key, green[channelgroup], g);
+    res = dk5q_set_key_channel(handle, key, (base+1)%3, g);
     if (res >= 0) {
-      res = dk5q_set_key_channel(handle, key, blue[channelgroup], b);
+      res = dk5q_set_key_channel(handle, key, (base+2)%3, b);
     }
   }
   return res;
