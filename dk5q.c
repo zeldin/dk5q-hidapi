@@ -90,6 +90,24 @@ int dk5q_set_key_rgb(dk5q_handle handle, uint8_t key, uint8_t r, uint8_t g, uint
   return res;
 }
 
+int dk5q_set_key_r(dk5q_handle handle, uint8_t key, uint8_t r, bool delayed)
+{
+  int base = channelgroups[key]&3;
+  return dk5q_set_key_channel(handle, key, base, r, delayed);
+}
+
+int dk5q_set_key_g(dk5q_handle handle, uint8_t key, uint8_t g, bool delayed)
+{
+  int base = channelgroups[key]&3;
+  return dk5q_set_key_channel(handle, key, (base+1)%3, g, delayed);
+}
+
+int dk5q_set_key_b(dk5q_handle handle, uint8_t key, uint8_t b, bool delayed)
+{
+  int base = channelgroups[key]&3;
+  return dk5q_set_key_channel(handle, key, (base+2)%3, b, delayed);
+}
+
 dk5q_handle dk5q_open(int instance)
 {
   struct hid_device_info *devs, *cur_dev;

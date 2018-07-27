@@ -114,9 +114,20 @@ int main(int argc, char* argv[])
 	uint8_t y = keyy[i];
 	uint16_t h = (y << 3) + sintab[((x << 3) + (travel >> 3)) & 1023];
 	uint32_t rgb = rainbow[h];
-	if (rgb != oldcolor[i]) {
+	uint32_t diff = rgb ^ oldcolor[i];
+	if (diff) {
+	  if (diff>>24) {
+	    /* Old value unknown, set all channels */
+	    dk5q_set_key_rgb(handle, i, rgb>>16, rgb>>8, rgb, false);
+	  } else {
+	    if(diff&0xff0000)
+	      dk5q_set_key_r(handle, i, rgb>>16, false);
+	    if(diff&0x00ff00)
+	      dk5q_set_key_g(handle, i, rgb>>8, false);
+	    if(diff&0x0000ff)
+	      dk5q_set_key_b(handle, i, rgb, false);
+	  }
 	  oldcolor[i] = rgb;
-	  dk5q_set_key_rgb(handle, i, rgb>>16, rgb>>8, rgb, false);
 	}
       }
     }
