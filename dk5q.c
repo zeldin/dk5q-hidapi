@@ -65,26 +65,26 @@ int dk5q_apply(dk5q_handle handle)
   return dk5q_exchange_reports(handle, report);
 }
 
-int dk5q_set_key_channel(dk5q_handle handle, uint8_t key, uint8_t channel, uint8_t value)
+int dk5q_set_key_channel(dk5q_handle handle, uint8_t key, uint8_t channel, uint8_t value, bool delayed)
 {
   uint8_t report[64] = {
     0, 0x28, 0, channel, 1, key, 2,
     0, 0, 0, 0, 0, 0, value, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 1, 0x40,
+    0, 0, 0, 0, 1, (delayed? 0x40 : 0),
   };
 
   return dk5q_exchange_reports(handle, report);
 }
 
-int dk5q_set_key_rgb(dk5q_handle handle, uint8_t key, uint8_t r, uint8_t g, uint8_t b)
+int dk5q_set_key_rgb(dk5q_handle handle, uint8_t key, uint8_t r, uint8_t g, uint8_t b, bool delayed)
 {
   int base = channelgroups[key]&3;
-  int res = dk5q_set_key_channel(handle, key, base, r);
+  int res = dk5q_set_key_channel(handle, key, base, r, delayed);
   if (res >= 0) {
-    res = dk5q_set_key_channel(handle, key, (base+1)%3, g);
+    res = dk5q_set_key_channel(handle, key, (base+1)%3, g, delayed);
     if (res >= 0) {
-      res = dk5q_set_key_channel(handle, key, (base+2)%3, b);
+      res = dk5q_set_key_channel(handle, key, (base+2)%3, b, delayed);
     }
   }
   return res;

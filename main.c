@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 #include "dk5q.h"
 
@@ -14,7 +15,7 @@ int main(int argc, char* argv[])
 
   int i;
   for(i=0x19; i<0xa7; i++)
-    dk5q_set_key_rgb(handle, i, 0xb4, 0x01, 0xfc);
+    dk5q_set_key_rgb(handle, i, 0xb4, 0x01, 0xfc, true);
   dk5q_apply(handle);
 
   dk5q_close(handle);
