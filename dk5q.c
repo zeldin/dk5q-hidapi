@@ -68,8 +68,10 @@ int dk5q_apply(dk5q_handle handle)
 int dk5q_set_key_channel(dk5q_handle handle, uint8_t key, uint8_t channel, uint8_t value)
 {
   uint8_t report[64] = {
-    0, 0x28, 0, channel, 1, key, 2, value, 0, (value < 12? 1 : value/12), 0, 5, 0, value, 0, 0,
-    0, 0, 0, (value < 12? 1 : value/12), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0x40,
+    0, 0x28, 0, channel, 1, key, 2,
+    0, 0, 0, 0, 0, 0, value, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 1, 0x40,
   };
 
   return dk5q_exchange_reports(handle, report);
